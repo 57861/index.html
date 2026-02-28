@@ -1,37 +1,155 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | นางสาวปภาวรินทร์</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Anuphan', sans-serif; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); }
-        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.5); }
-    </style>
-</head>
-<body class="min-h-screen flex items-center justify-center p-6 text-slate-800">
+import React, { useState } from 'react';
+import { 
+  User, Heart, Award, BookOpen, Mic, Scale, 
+  Lock, Unlock, Camera, ChevronRight, GraduationCap, 
+  Users, Lightbulb, Target, Home, Eye, Share2, Plus,
+  CheckCircle, ShieldCheck
+} from 'lucide-react';
 
-    <div class="max-w-md w-full glass rounded-[2.5rem] shadow-2xl p-10 text-center">
-        <div class="w-24 h-24 bg-gradient-to-tr from-sky-400 to-blue-500 rounded-full mx-auto mb-6 flex items-center justify-center shadow-lg">
-            <span class="text-4xl text-white">P</span>
+const App = () => {
+  const [isLocked, setIsLocked] = useState(true);
+  const [activeTab, setActiveTab] = useState('home');
+
+  const structure = [
+    { key: 'P', title: 'Profile', desc: 'ประวัติส่วนตัว', icon: <User size={20}/>, color: 'bg-sky-700' },
+    { key: 'A', title: 'Academic', desc: 'ประวัติการศึกษา', icon: <GraduationCap size={20}/>, color: 'bg-indigo-600' },
+    { key: 'P', title: 'Public Mind', desc: 'จิตสาธารณะ', icon: <Heart size={20}/>, color: 'bg-rose-600' },
+    { key: 'H', title: 'Honors', desc: 'เกียรติประวัติ', icon: <Award size={20}/>, color: 'bg-amber-600' },
+    { key: 'A', title: 'Activities', desc: 'กิจกรรม', icon: <Users size={20}/>, color: 'bg-emerald-600' },
+    { key: 'W', title: 'Workshop', desc: 'การฝึกอบรม', icon: <BookOpen size={20}/>, color: 'bg-violet-600' },
+    { key: 'A', title: 'Analytical', desc: 'โครงงาน/วิจัย', icon: <Lightbulb size={20}/>, color: 'bg-orange-600' },
+    { key: 'R', title: 'Remarkable', desc: 'ทักษะพิเศษ', icon: <Mic size={20}/>, color: 'bg-blue-700', highlight: true },
+    { key: 'I', title: 'Internship', desc: 'การดูงาน', icon: <ShieldCheck size={20}/>, color: 'bg-slate-700' },
+    { key: 'N', title: 'Next Step', desc: 'เป้าหมายที่ มข.', icon: <Target size={20}/>, color: 'bg-red-700' }
+  ];
+
+  return (
+    <div className="min-h-screen bg-slate-50 font-sans pb-32">
+      {/* Header */}
+      <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 px-6 py-4 flex justify-between items-center shadow-sm">
+        <div className="flex items-center gap-3">
+          <div className="bg-sky-900 p-2 rounded-xl text-white shadow-md">
+            <Scale size={20} />
+          </div>
+          <div>
+            <h1 className="text-lg font-black text-slate-900 tracking-tight leading-none uppercase">PAPHAWARIN</h1>
+            <p className="text-[9px] font-bold text-sky-600 uppercase tracking-widest mt-1">Law Portfolio 2026</p>
+          </div>
+        </div>
+        <div className={`px-3 py-1 rounded-full text-[10px] font-bold border flex items-center gap-2 ${isLocked ? 'bg-amber-50 border-amber-100 text-amber-600' : 'bg-emerald-50 border-emerald-100 text-emerald-600'}`}>
+          {isLocked ? <Lock size={12} /> : <Unlock size={12} />}
+          {isLocked ? 'LOCKED' : 'EDITING'}
+        </div>
+      </nav>
+
+      <div className="max-w-md mx-auto p-5 space-y-6">
+        {/* Profile Card */}
+        <div className="bg-white rounded-[2.5rem] p-8 text-center shadow-xl shadow-slate-200 border border-white overflow-hidden relative">
+          <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-sky-700 to-sky-900"></div>
+          <div className="w-24 h-24 bg-slate-100 rounded-[2rem] mx-auto mb-4 flex items-center justify-center border-4 border-white shadow-lg overflow-hidden relative">
+            <User size={40} className="text-slate-300" />
+            <div className="absolute inset-0 bg-black/5 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+              <Camera size={20} className="text-white" />
+            </div>
+          </div>
+          <h2 className="text-2xl font-black text-slate-800 tracking-tight leading-tight">นางสาวปภาวรินทร์</h2>
+          <p className="text-xs font-bold text-sky-600 mb-6 uppercase tracking-widest">โรงเรียนนารีนุกูล | Candidate for Law KKU</p>
+          
+          {isLocked ? (
+            <div className="space-y-3">
+              <input 
+                type="password" 
+                placeholder="PASSWORD: 1234" 
+                className="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-2xl text-center font-bold text-sm focus:border-sky-500 outline-none transition-all shadow-inner"
+                onChange={(e) => e.target.value === '1234' ? setIsLocked(false) : null}
+              />
+              <p className="text-[9px] text-slate-400 font-medium">ใส่รหัสผ่านเพื่อเข้าสู่ระบบพอร์ตโฟลิโอ</p>
+            </div>
+          ) : (
+            <div className="bg-emerald-50 text-emerald-700 py-3 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 animate-pulse">
+              <CheckCircle size={16} /> ปลดล็อกระบบเรียบร้อยแล้ว
+            </div>
+          )}
         </div>
 
-        <h1 class="text-2xl font-bold mb-2">นางสาวปภาวรินทร์</h1>
-        <p class="text-sky-600 font-semibold text-lg mb-6">โรงเรียนนารีนุกูล</p>
-        
-        <div class="h-[1px] bg-slate-200 w-20 mx-auto mb-6"></div>
-        
-        <p class="text-slate-500 leading-relaxed mb-8">
-            ยินดีต้อนรับสู่หน้า Portfolio ออนไลน์ของฉันค่ะ<br>
-            กำลังศึกษาอยู่ที่โรงเรียนนารีนุกูล
-        </p>
+        {/* Portfolio 10 Pages List */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between px-2">
+            <h3 className="font-black text-slate-400 text-[10px] tracking-[0.3em] uppercase">--- My 10 Pages System ---</h3>
+            <span className="text-[9px] font-bold text-sky-900 bg-sky-100 px-2 py-0.5 rounded-full uppercase">P-A-P-H-A-W-A-R-I-N</span>
+          </div>
+          
+          {structure.map((item) => (
+            <div 
+              key={item.key} 
+              className={`bg-white rounded-[2rem] shadow-sm border-2 transition-all active:scale-[0.98] ${item.highlight ? 'border-sky-500 ring-4 ring-sky-50' : 'border-white'}`}
+            >
+              <div className="p-5 flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className={`w-12 h-12 ${item.color} rounded-2xl flex items-center justify-center text-white font-black text-lg shadow-lg shadow-slate-200`}>
+                    {item.key}
+                  </div>
+                  <div>
+                    <h4 className="font-black text-slate-800 text-[13px] leading-tight uppercase">{item.title}</h4>
+                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">{item.desc}</p>
+                  </div>
+                </div>
+                <ChevronRight size={18} className="text-slate-300" />
+              </div>
 
-        <div class="inline-block bg-white px-6 py-2 rounded-full shadow-sm border border-slate-100">
-            <span class="text-sm font-bold text-slate-600">Student Portfolio</span>
+              {item.highlight && (
+                <div className="px-5 pb-5">
+                  <div className="bg-sky-50 p-4 rounded-2xl border border-sky-100 mb-4">
+                    <p className="font-bold text-sky-900 text-[11px] mb-1 leading-tight flex items-center gap-2">
+                      <Mic size={14} /> กิจกรรมเด่น: พิธีกรภาษาจีน
+                    </p>
+                    <p className="text-[10px] text-sky-700 leading-relaxed opacity-80 italic">
+                      "ปฏิบัติหน้าที่ ณ เซ็นทรัล อุบลราชธานี 17 ก.พ. 2569 แสดงทักษะ Public Speaking เพื่อเข้าสู่คณะนิติศาสตร์ มข."
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2">
+                     {[1,2,3].map(i => (
+                       <div key={i} className="aspect-square bg-slate-50 rounded-xl border-2 border-dashed border-slate-200 flex items-center justify-center text-slate-300">
+                         <Camera size={16}/>
+                       </div>
+                     ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
+      </div>
+
+      {/* Navigation Bar */}
+      <div className="fixed bottom-6 left-6 right-6 bg-white/95 backdrop-blur-md border border-slate-200 p-3 rounded-full shadow-2xl z-50 flex justify-around items-center">
+        <button className="p-3 text-sky-900 bg-sky-50 rounded-full">
+          <Home size={20} />
+        </button>
+        <button className="p-3 text-slate-400">
+          <BookOpen size={20} />
+        </button>
+        <div className="relative">
+          <button className="w-14 h-14 bg-sky-900 text-white rounded-full flex items-center justify-center shadow-xl -mt-14 border-4 border-slate-50 active:scale-90 transition-all">
+            <Plus size={24} />
+          </button>
+        </div>
+        <button className="p-3 text-slate-400">
+          <Eye size={20} />
+        </button>
+        <button className="p-3 text-slate-400" onClick={() => {
+           const url = window.location.href;
+           alert('คัดลอกลิงก์ส่งงานให้คุณครูได้เลยค่ะ:\n' + url);
+        }}>
+          <Share2 size={20} />
+        </button>
+      </div>
+
+      <footer className="text-center py-6 opacity-30">
+          <p className="text-[8px] font-bold text-slate-500 uppercase tracking-[0.5em]">นางสาวปภาวรินทร์ TCAS System</p>
+      </footer>
     </div>
+  );
+};
 
-</body>
-</html>
+export default App;
